@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Abtirsi - Clan Tree Viewer</title>
+    <title>Abtirsi - Somali Clan Genealogy</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <style>
         * {
@@ -13,7 +13,7 @@
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #d4c9a8 0%, #e8e0c8 100%);
+            background: #6ba3b5;
             min-height: 100vh;
             padding: 20px;
         }
@@ -28,7 +28,7 @@
         }
         
         .header {
-            background: #8b7355;
+            background: #4a7c8c;
             color: #fdf8ed;
             padding: 20px 30px;
             border-bottom: 3px solid #d4a843;
@@ -45,7 +45,7 @@
         }
         
         .toolbar {
-            background: #efe6d2;
+            background: #e8e0c8;
             padding: 15px 30px;
             border-bottom: 1px solid #d4c9a8;
             display: flex;
@@ -56,7 +56,7 @@
         }
         
         .toolbar button {
-            background: #8b7355;
+            background: #4a7c8c;
             color: white;
             border: none;
             padding: 8px 20px;
@@ -67,12 +67,13 @@
         }
         
         .toolbar button:hover {
-            background: #6b5740;
+            background: #3a6270;
         }
         
         .toolbar .stats {
-            color: #6b5740;
+            color: #4a7c8c;
             font-size: 14px;
+            font-weight: bold;
         }
         
         .tree-container {
@@ -100,43 +101,28 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 12px 12px;
-            margin: 4px 0;
-            background: #fffaf0;
-            border-radius: 8px;
-            border: 1px solid #e0d5b5;
+            padding: 10px 15px;
+            margin: 6px 0;
+            background: #f5e6ca;
+            border-radius: 10px;
+            border: 1px solid #d4a843;
             cursor: pointer;
             transition: all 0.2s;
             position: relative;
             touch-action: manipulation;
         }
         
-        .tree li .node:active {
-            background: #e8ddc5;
-            transform: scale(0.99);
-        }
-        
-        .tree li .node.long-press-active {
-            background: #d4a843;
-            border-color: #8b7355;
-            color: white;
-        }
-        
-        .tree li .node.long-press-active .clan-name {
-            color: white;
-        }
-        
         .tree li .node:hover {
-            background: #f5edd5;
-            border-color: #d4a843;
+            background: #eddaae;
+            border-color: #b8922a;
             transform: translateX(5px);
         }
         
         .tree li .node .toggle {
             font-size: 14px;
             font-weight: bold;
-            color: #8b7355;
-            width: 20px;
+            color: #4a7c8c;
+            width: 24px;
             text-align: center;
             cursor: pointer;
             touch-action: manipulation;
@@ -145,20 +131,54 @@
         .tree li .node .clan-name {
             flex: 1;
             font-weight: 600;
-            color: #5c4a2e;
+            color: #3a4a3a;
+            font-size: 15px;
         }
         
         .tree li .node .clan-name strong {
-            color: #3d2e1a;
+            color: #2c3e2c;
         }
         
         .tree li .node .badge {
             background: #d4a843;
             color: white;
-            padding: 2px 8px;
-            border-radius: 12px;
+            padding: 2px 10px;
+            border-radius: 20px;
             font-size: 11px;
             font-weight: bold;
+        }
+        
+        .tree li .node .action-buttons {
+            display: none;
+            gap: 6px;
+        }
+        
+        .tree li .node:hover .action-buttons {
+            display: flex;
+        }
+        
+        .action-btn {
+            background: #4a7c8c;
+            color: white;
+            border: none;
+            padding: 4px 10px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+        
+        .action-btn:hover {
+            background: #3a6270;
+        }
+        
+        .action-btn.edit {
+            background: #d4a843;
+        }
+        
+        .action-btn.edit:hover {
+            background: #b8922a;
         }
         
         .tree li .children {
@@ -187,16 +207,15 @@
         
         .modal-content {
             background: #fdf8ed;
-            padding: 30px;
-            border-radius: 12px;
-            width: 400px;
+            padding: 25px;
+            border-radius: 16px;
+            width: 350px;
             max-width: 90%;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
         
         .modal-content h3 {
-            margin-bottom: 20px;
-            color: #8b7355;
+            margin-bottom: 15px;
+            color: #4a7c8c;
         }
         
         .modal-content input, .modal-content select {
@@ -204,24 +223,23 @@
             padding: 12px;
             margin: 10px 0;
             border: 1px solid #d4c9a8;
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 16px;
-            background: #fffaf0;
+            background: white;
         }
         
         .modal-content button {
-            padding: 12px 20px;
+            padding: 10px 20px;
             margin-right: 10px;
             margin-top: 10px;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
-            font-size: 16px;
         }
         
         .modal-content button:first-of-type {
-            background: #8b7355;
+            background: #4a7c8c;
             color: white;
         }
         
@@ -234,12 +252,30 @@
             bottom: 20px;
             right: 20px;
             background: rgba(0,0,0,0.7);
-            padding: 10px 20px;
-            border-radius: 8px;
+            backdrop-filter: blur(8px);
+            padding: 8px 16px;
+            border-radius: 20px;
             color: #0f0;
             font-size: 12px;
-            font-family: monospace;
             z-index: 100;
+            pointer-events: none;
+        }
+        
+        .mobile-instruction {
+            background: #e8e0c8;
+            padding: 10px 15px;
+            text-align: center;
+            font-size: 12px;
+            color: #4a7c8c;
+            border-bottom: 1px solid #d4c9a8;
+        }
+        
+        .mobile-instruction strong {
+            background: #d4a843;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            margin: 0 4px;
         }
         
         .root-actions {
@@ -251,58 +287,30 @@
             background: #d4a843;
             color: white;
             border: none;
-            padding: 12px 24px;
+            padding: 10px 24px;
             border-radius: 25px;
             cursor: pointer;
             font-weight: bold;
             margin: 10px;
-            font-size: 16px;
-            touch-action: manipulation;
+            font-size: 14px;
         }
         
         .btn-add-root:hover {
             background: #b8922a;
         }
-        
-        .btn-add-root:active {
-            transform: scale(0.97);
-        }
-        
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: #8b7355;
-        }
-        
-        /* Instruction for mobile users */
-        .mobile-instruction {
-            background: #efe6d2;
-            padding: 10px 15px;
-            text-align: center;
-            font-size: 12px;
-            color: #6b5740;
-            border-bottom: 1px solid #d4c9a8;
-        }
-        
-        .mobile-instruction strong {
-            background: #d4a843;
-            color: white;
-            padding: 2px 8px;
-            border-radius: 12px;
-            margin: 0 4px;
-        }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
 <div class="container">
     <div class="header">
         <h1>🌳 Somali Abtirsi - Clan Tree Viewer</h1>
-        <p>Tap to expand/collapse • Press and hold on any clan to add a child branch</p>
+        <p>Tap to expand/collapse • Hover or tap-and-hold for actions (Edit, Add Child, Add Spouse, Add Sibling)</p>
     </div>
     
     <div class="mobile-instruction">
-        📱 On iPhone/Android: <strong>Press and hold</strong> on any clan name to add a child branch
+        📱 On mobile: <strong>Tap and hold</strong> on any clan to see action buttons
     </div>
     
     <div class="toolbar">
@@ -321,152 +329,80 @@
 
 <div id="nodeModal" class="modal">
     <div class="modal-content">
-        <h3 id="modalTitle">Add New Clan</h3>
-        <input type="text" id="nodeNameInput" placeholder="Clan name (e.g., 'Reer Xirsi')" autocomplete="off">
+        <h3 id="modalTitle">Add/Edit Clan</h3>
+        <input type="text" id="nodeNameInput" placeholder="Clan name" autocomplete="off">
         <div>
-            <button id="modalConfirm">Add</button>
+            <button id="modalConfirm">Confirm</button>
             <button id="modalCancel">Cancel</button>
         </div>
     </div>
 </div>
 
-<div class="status" id="status">
-    ⚡ Ready
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<div class="status" id="status">⚡ Ready</div>
 
 <script>
     (function() {
-        // ========== REPLACE THESE WITH YOUR ACTUAL KEYS ==========
+        // ========== REPLACE WITH YOUR SUPABASE KEYS ==========
         const SUPABASE_URL = 'https://dzgaaoawkvqjuoecytko.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR6Z2Fhb2F3a3ZxanVvZWN5dGtvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg5NTg3NDYsImV4cCI6MjA5NDUzNDc0Nn0.dO9kp9u23s0MnSzVZ8cIQYCzD926RdrEaMBG0POxJ8k';
-        // ==========================================================
+        // =====================================================
         
-        let appSupabase = null;
-        let appClanData = [];
-        let longPressTimer = null;
-        let activeNode = null;
+        let supabaseClient = null;
+        let clanData = [];
+        let pendingAction = null;
+        let pendingNode = null;
         
-        // Initialize
         function init() {
-            if (SUPABASE_URL === 'YOUR_SUPABASE_URL_HERE' || SUPABASE_ANON_KEY === 'YOUR_SUPABASE_ANON_KEY_HERE') {
-                document.getElementById('treeContainer').innerHTML = '<div class="loading" style="color:red;">❌ Please configure SUPABASE_URL and SUPABASE_ANON_KEY in the code</div>';
+            if (SUPABASE_URL.includes('YOUR_SUPABASE')) {
+                document.getElementById('treeContainer').innerHTML = '<div style="padding:40px;color:red;">❌ Please configure Supabase keys</div>';
                 return;
             }
-            
-            appSupabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
             loadClanData();
             
-            // Setup button handlers
             document.getElementById('expandAllBtn').onclick = expandAll;
             document.getElementById('collapseAllBtn').onclick = collapseAll;
-            document.getElementById('refreshBtn').onclick = function() { loadClanData(); };
+            document.getElementById('refreshBtn').onclick = () => loadClanData();
             
-            // Modal handlers
             document.getElementById('modalConfirm').onclick = onModalConfirm;
-            document.getElementById('modalCancel').onclick = function() {
+            document.getElementById('modalCancel').onclick = () => {
                 document.getElementById('nodeModal').style.display = 'none';
-                clearLongPress();
+                pendingAction = null;
+                pendingNode = null;
             };
-            
-            // Close modal on outside click
-            window.onclick = function(event) {
-                const modal = document.getElementById('nodeModal');
-                if (event.target === modal) {
-                    modal.style.display = 'none';
-                    clearLongPress();
-                }
-            };
-        }
-        
-        function clearLongPress() {
-            if (longPressTimer) {
-                clearTimeout(longPressTimer);
-                longPressTimer = null;
-            }
-            if (activeNode) {
-                activeNode.classList.remove('long-press-active');
-                activeNode = null;
-            }
-        }
-        
-        function setupLongPress(nodeElement, clanName, fullPath) {
-            // Touch start (for mobile)
-            nodeElement.addEventListener('touchstart', function(e) {
-                clearLongPress();
-                activeNode = nodeElement;
-                longPressTimer = setTimeout(function() {
-                    if (activeNode) {
-                        activeNode.classList.add('long-press-active');
-                        openAddChildModal(clanName, fullPath);
-                        // Vibrate if supported (optional)
-                        if (navigator.vibrate) navigator.vibrate(50);
-                    }
-                    clearLongPress();
-                }, 500); // 500ms long press
-            });
-            
-            // Touch end (cancel long press if finger lifted early)
-            nodeElement.addEventListener('touchend', function(e) {
-                clearLongPress();
-            });
-            
-            // Touch move (cancel if finger moves)
-            nodeElement.addEventListener('touchmove', function(e) {
-                clearLongPress();
-            });
-            
-            // Mouse down (for right-click on desktop)
-            nodeElement.addEventListener('contextmenu', function(e) {
-                e.preventDefault();
-                clearLongPress();
-                openAddChildModal(clanName, fullPath);
-                return false;
-            });
         }
         
         async function loadClanData() {
             try {
-                const statusDiv = document.getElementById('status');
-                const statsDiv = document.getElementById('stats');
-                const container = document.getElementById('treeContainer');
+                document.getElementById('status').innerHTML = '📡 Loading...';
+                document.getElementById('stats').innerHTML = 'Loading...';
+                document.getElementById('treeContainer').innerHTML = '<div style="padding:40px;text-align:center;">Loading clan tree...</div>';
                 
-                statusDiv.innerHTML = '📡 Loading...';
-                statsDiv.innerHTML = 'Loading...';
-                container.innerHTML = '<div class="loading">Loading clan tree from database...</div>';
-                
-                const { data, error } = await appSupabase
+                const { data, error } = await supabaseClient
                     .from('clan_paths')
                     .select('*')
                     .order('level_1', { ascending: true });
                 
                 if (error) throw error;
                 
-                appClanData = data || [];
-                statsDiv.innerHTML = `📊 ${appClanData.length} clan paths loaded`;
-                statusDiv.innerHTML = '✅ Loaded ' + appClanData.length + ' paths';
-                
+                clanData = data || [];
+                document.getElementById('stats').innerHTML = `📊 ${clanData.length} clan paths`;
+                document.getElementById('status').innerHTML = '✅ Loaded';
                 renderTree();
-                
-                // After rendering, collapse all nodes by default
-                collapseAll();
-                
+                setTimeout(() => collapseAll(), 100);
                 setTimeout(() => {
-                    statusDiv.style.opacity = '0.5';
+                    document.getElementById('status').style.opacity = '0.5';
                 }, 2000);
-                
-            } catch (error) {
-                console.error('Error:', error);
-                document.getElementById('treeContainer').innerHTML = '<div class="loading" style="color:red;">❌ Error: ' + error.message + '</div>';
+            } catch (err) {
+                console.error(err);
+                document.getElementById('treeContainer').innerHTML = '<div style="padding:40px;color:red;">❌ Error: ' + err.message + '</div>';
                 document.getElementById('status').innerHTML = '❌ Error';
             }
         }
         
-        function buildTreeStructure() {
+        function buildTree() {
             const tree = {};
-            
-            appClanData.forEach(path => {
+            clanData.forEach(path => {
                 const levels = [];
                 if (path.level_1) levels.push(path.level_1);
                 if (path.level_2) levels.push(path.level_2);
@@ -477,44 +413,34 @@
                 if (path.level_7) levels.push(path.level_7);
                 
                 let current = tree;
-                levels.forEach((level, index) => {
+                levels.forEach((level, idx) => {
+                    const full = levels.slice(0, idx + 1).join(' > ');
                     if (!current[level]) {
-                        current[level] = {
-                            name: level,
-                            fullPath: levels.slice(0, index + 1).join(' > '),
-                            children: {}
-                        };
+                        current[level] = { name: level, fullPath: full, children: {} };
                     }
                     current = current[level].children;
                 });
             });
-            
             return tree;
         }
         
         function renderTree() {
             const container = document.getElementById('treeContainer');
-            const tree = buildTreeStructure();
+            const tree = buildTree();
             const rootNodes = Object.values(tree);
             
             if (rootNodes.length === 0) {
-                container.innerHTML = '<div class="loading">No clan data found. Please add some using the claim form first.</div>';
+                container.innerHTML = '<div style="padding:40px;text-align:center;">No clan data found. Use "Add Root Clan" button to start.</div>';
                 return;
             }
             
             let html = '<ul class="tree">';
-            rootNodes.forEach(node => {
-                html += renderNode(node, 0);
-            });
+            rootNodes.forEach(node => html += renderNode(node, 0));
             html += '</ul>';
-            
-            html += '<div class="root-actions">';
-            html += '<button class="btn-add-root" id="addRootBtn">➕ Add New Root Clan</button>';
-            html += '</div>';
-            
+            html += '<div class="root-actions"><button class="btn-add-root" id="addRootBtn">➕ Add New Root Clan</button></div>';
             container.innerHTML = html;
             
-            // Attach click handlers for expand/collapse
+            // Expand/collapse handlers
             document.querySelectorAll('.toggle').forEach(toggle => {
                 toggle.addEventListener('click', function(e) {
                     e.stopPropagation();
@@ -526,25 +452,42 @@
                 });
             });
             
-            // Attach long-press and right-click handlers to nodes
-            document.querySelectorAll('.node').forEach(node => {
-                const clanName = node.querySelector('.clan-name').textContent;
-                const fullPath = node.getAttribute('data-fullpath') || clanName;
-                setupLongPress(node, clanName, fullPath);
+            // Action buttons handlers
+            document.querySelectorAll('.action-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const action = this.dataset.action;
+                    const nodeDiv = this.closest('.node');
+                    const clanName = nodeDiv.querySelector('.clan-name strong').textContent;
+                    const fullPath = nodeDiv.dataset.fullpath;
+                    
+                    if (action === 'edit') {
+                        openEditModal(clanName, fullPath);
+                    } else if (action === 'addChild') {
+                        openAddChildModal(clanName, fullPath);
+                    } else if (action === 'addSpouse') {
+                        openAddSpouseModal(clanName, fullPath);
+                    } else if (action === 'addSibling') {
+                        openAddSiblingModal(clanName, fullPath);
+                    }
+                });
             });
             
-            // Add root button handler
-            const addRootBtn = document.getElementById('addRootBtn');
-            if (addRootBtn) {
-                addRootBtn.addEventListener('click', function() {
-                    openAddRootModal();
+            // Long-press for mobile (reveal action buttons)
+            document.querySelectorAll('.node').forEach(node => {
+                let pressTimer;
+                node.addEventListener('touchstart', function(e) {
+                    pressTimer = setTimeout(() => {
+                        const actions = this.querySelector('.action-buttons');
+                        if (actions) actions.style.display = 'flex';
+                        setTimeout(() => { if (actions) actions.style.display = 'none'; }, 3000);
+                    }, 500);
                 });
-                // Also support long-press on button (just in case)
-                addRootBtn.addEventListener('contextmenu', function(e) {
-                    e.preventDefault();
-                    openAddRootModal();
-                });
-            }
+                node.addEventListener('touchend', () => clearTimeout(pressTimer));
+                node.addEventListener('touchmove', () => clearTimeout(pressTimer));
+            });
+            
+            document.getElementById('addRootBtn').onclick = () => openAddRootModal();
         }
         
         function renderNode(node, level) {
@@ -557,103 +500,154 @@
                         ${hasChildren ? '<span class="toggle">▼</span>' : '<span class="toggle" style="opacity:0.3;">●</span>'}
                         <span class="clan-name"><strong>${escapeHtml(node.name)}</strong></span>
                         ${hasChildren ? `<span class="badge">${Object.keys(node.children).length}</span>` : ''}
+                        <div class="action-buttons">
+                            <button class="action-btn edit" data-action="edit">✏️ Edit</button>
+                            <button class="action-btn" data-action="addChild">➕ Child</button>
+                            <button class="action-btn" data-action="addSpouse">💑 Spouse</button>
+                            <button class="action-btn" data-action="addSibling">👥 Sibling</button>
+                        </div>
                     </div>
                     ${hasChildren ? `<div class="children"><ul class="tree">${Object.values(node.children).map(child => renderNode(child, level + 1)).join('')}</ul></div>` : ''}
                 </li>
             `;
         }
         
-        function escapeHtml(text) {
+        function escapeHtml(str) {
             const div = document.createElement('div');
-            div.textContent = text;
+            div.textContent = str;
             return div.innerHTML;
         }
         
-        function openAddRootModal() {
-            document.getElementById('modalTitle').innerText = 'Add New Root Clan';
-            document.getElementById('nodeNameInput').value = '';
-            document.getElementById('nodeModal').style.display = 'flex';
-            window._pendingParentPath = null;
-            clearLongPress();
-        }
-        
-        function openAddChildModal(clanName, fullPath) {
-            document.getElementById('modalTitle').innerText = `Add Child to ${clanName}`;
-            document.getElementById('nodeNameInput').value = '';
-            document.getElementById('nodeModal').style.display = 'flex';
-            window._pendingParentPath = fullPath;
-            clearLongPress();
-        }
-        
-        async function onModalConfirm() {
-            const newNodeName = document.getElementById('nodeNameInput').value.trim();
-            const parentPath = window._pendingParentPath;
-            
-            if (!newNodeName) {
-                alert('Please enter a clan name');
-                return;
-            }
-            
-            document.getElementById('nodeModal').style.display = 'none';
-            
-            try {
-                const statusDiv = document.getElementById('status');
-                statusDiv.innerHTML = '💾 Saving...';
-                
-                let newPathArray = [];
-                
-                if (parentPath && parentPath !== '') {
-                    newPathArray = parentPath.split(' > ');
-                    newPathArray.push(newNodeName);
-                } else {
-                    newPathArray = [newNodeName];
-                }
-                
-                const newRow = {
-                    level_1: newPathArray[0] || null,
-                    level_2: newPathArray[1] || null,
-                    level_3: newPathArray[2] || null,
-                    level_4: newPathArray[3] || null,
-                    level_5: newPathArray[4] || null,
-                    level_6: newPathArray[5] || null,
-                    level_7: newPathArray[6] || null
-                };
-                
-                const { error } = await appSupabase.from('clan_paths').insert([newRow]);
-                
-                if (error) throw error;
-                
-                statusDiv.innerHTML = '✅ Added! Refreshing...';
-                statusDiv.style.color = '#0f0';
-                
-                await loadClanData();
-                
-            } catch (error) {
-                console.error('Error:', error);
-                document.getElementById('status').innerHTML = '❌ Error: ' + error.message;
-                document.getElementById('status').style.color = '#f00';
-            }
-        }
-        
         function expandAll() {
-            document.querySelectorAll('.children').forEach(el => {
-                el.classList.remove('collapsed');
-            });
-            document.querySelectorAll('.toggle').forEach(el => {
-                if (el.textContent === '▶') el.textContent = '▼';
-            });
+            document.querySelectorAll('.children').forEach(el => el.classList.remove('collapsed'));
+            document.querySelectorAll('.toggle').forEach(el => { if (el.textContent === '▶') el.textContent = '▼'; });
         }
         
         function collapseAll() {
-            document.querySelectorAll('.children').forEach(el => {
-                el.classList.add('collapsed');
-            });
-            document.querySelectorAll('.toggle').forEach(el => {
-                if (el.textContent === '▼') el.textContent = '▶';
-            });
+            document.querySelectorAll('.children').forEach(el => el.classList.add('collapsed'));
+            document.querySelectorAll('.toggle').forEach(el => { if (el.textContent === '▼') el.textContent = '▶'; });
         }
         
-        // Start the app
+        // Modal actions
+        function openEditModal(clanName, fullPath) {
+            pendingAction = 'edit';
+            pendingNode = { name: clanName, fullPath };
+            document.getElementById('modalTitle').innerText = `✏️ Edit Clan: ${clanName}`;
+            document.getElementById('nodeNameInput').value = clanName;
+            document.getElementById('nodeModal').style.display = 'flex';
+        }
+        
+        function openAddChildModal(parentName, parentPath) {
+            pendingAction = 'addChild';
+            pendingNode = { name: parentName, fullPath: parentPath };
+            document.getElementById('modalTitle').innerText = `➕ Add Child to ${parentName}`;
+            document.getElementById('nodeNameInput').value = '';
+            document.getElementById('nodeModal').style.display = 'flex';
+        }
+        
+        function openAddSpouseModal(clanName, clanPath) {
+            pendingAction = 'addSpouse';
+            pendingNode = { name: clanName, fullPath: clanPath };
+            document.getElementById('modalTitle').innerText = `💑 Add Spouse for ${clanName}`;
+            document.getElementById('nodeNameInput').value = '';
+            document.getElementById('nodeModal').style.display = 'flex';
+        }
+        
+        function openAddSiblingModal(siblingName, siblingPath) {
+            pendingAction = 'addSibling';
+            pendingNode = { name: siblingName, fullPath: siblingPath };
+            document.getElementById('modalTitle').innerText = `👥 Add Sibling of ${siblingName}`;
+            document.getElementById('nodeNameInput').value = '';
+            document.getElementById('nodeModal').style.display = 'flex';
+        }
+        
+        function openAddRootModal() {
+            pendingAction = 'addRoot';
+            pendingNode = null;
+            document.getElementById('modalTitle').innerText = '➕ Add New Root Clan';
+            document.getElementById('nodeNameInput').value = '';
+            document.getElementById('nodeModal').style.display = 'flex';
+        }
+        
+        async function onModalConfirm() {
+            const newValue = document.getElementById('nodeNameInput').value.trim();
+            if (!newValue) { alert('Please enter a clan name'); return; }
+            document.getElementById('nodeModal').style.display = 'none';
+            
+            try {
+                document.getElementById('status').innerHTML = '💾 Saving...';
+                
+                if (pendingAction === 'edit' && pendingNode) {
+                    // Edit existing clan name - requires updating all paths containing this node
+                    await editClanName(pendingNode.fullPath, pendingNode.name, newValue);
+                } 
+                else if (pendingAction === 'addChild' && pendingNode) {
+                    const newPath = pendingNode.fullPath + ' > ' + newValue;
+                    await addNewPath(newPath.split(' > '));
+                }
+                else if (pendingAction === 'addSpouse' && pendingNode) {
+                    // Spouse is stored as a separate path with annotation
+                    const spousePath = pendingNode.fullPath + ' (spouse of ' + pendingNode.name + ') > ' + newValue;
+                    await addNewPath(spousePath.split(' > '));
+                }
+                else if (pendingAction === 'addSibling' && pendingNode) {
+                    // Sibling - same parent path
+                    const pathParts = pendingNode.fullPath.split(' > ');
+                    pathParts.pop(); // remove current sibling name
+                    pathParts.push(newValue);
+                    await addNewPath(pathParts);
+                }
+                else if (pendingAction === 'addRoot') {
+                    await addNewPath([newValue]);
+                }
+                
+                document.getElementById('status').innerHTML = '✅ Saved! Reloading...';
+                await loadClanData();
+            } catch (err) {
+                document.getElementById('status').innerHTML = '❌ ' + err.message;
+            }
+        }
+        
+        async function editClanName(oldFullPath, oldName, newName) {
+            // Find all paths containing this node
+            const pathsToUpdate = clanData.filter(row => {
+                const levels = [];
+                if (row.level_1) levels.push(row.level_1);
+                if (row.level_2) levels.push(row.level_2);
+                if (row.level_3) levels.push(row.level_3);
+                if (row.level_4) levels.push(row.level_4);
+                if (row.level_5) levels.push(row.level_5);
+                if (row.level_6) levels.push(row.level_6);
+                if (row.level_7) levels.push(row.level_7);
+                return levels.includes(oldName);
+            });
+            
+            for (const row of pathsToUpdate) {
+                const newRow = { ...row };
+                if (newRow.level_1 === oldName) newRow.level_1 = newName;
+                if (newRow.level_2 === oldName) newRow.level_2 = newName;
+                if (newRow.level_3 === oldName) newRow.level_3 = newName;
+                if (newRow.level_4 === oldName) newRow.level_4 = newName;
+                if (newRow.level_5 === oldName) newRow.level_5 = newName;
+                if (newRow.level_6 === oldName) newRow.level_6 = newName;
+                if (newRow.level_7 === oldName) newRow.level_7 = newName;
+                
+                const { error } = await supabaseClient.from('clan_paths').update(newRow).eq('id', row.id);
+                if (error) throw error;
+            }
+        }
+        
+        async function addNewPath(pathArray) {
+            const newRow = {
+                level_1: pathArray[0] || null, level_2: pathArray[1] || null,
+                level_3: pathArray[2] || null, level_4: pathArray[3] || null,
+                level_5: pathArray[4] || null, level_6: pathArray[5] || null,
+                level_7: pathArray[6] || null
+            };
+            const { error } = await supabaseClient.from('clan_paths').insert([newRow]);
+            if (error) throw error;
+        }
+        
         init();
     })();
 </script>
